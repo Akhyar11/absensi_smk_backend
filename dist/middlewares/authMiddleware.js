@@ -15,8 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.authMiddleware = exports.adminAuthMiddleware = void 0;
 const adminContoller_1 = require("../controllers/adminContoller");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const privetKey_json_1 = __importDefault(require("../assets/privetKey.json"));
 const adminService_1 = require("../services/adminService");
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const adminAuthMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const validAdmin = yield (0, adminContoller_1.getForCekAdmin)(req, res);
@@ -26,7 +27,7 @@ const adminAuthMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0
             return res.status(401).json({ message: "Unauthorized" });
         }
         try {
-            const payload = jsonwebtoken_1.default.verify(token, privetKey_json_1.default.value);
+            const payload = jsonwebtoken_1.default.verify(token, process.env.JWT_PRIVATKEY);
             console.log(payload);
             const admin = yield (0, adminService_1.getAdminById)(payload.uid);
             if (!admin)
@@ -49,7 +50,7 @@ const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         return res.status(401).json({ message: "Unauthorized" });
     }
     try {
-        jsonwebtoken_1.default.verify(token, privetKey_json_1.default.value);
+        jsonwebtoken_1.default.verify(token, process.env.JWT_PRIVATKEY);
         next();
     }
     catch (error) {

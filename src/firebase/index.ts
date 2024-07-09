@@ -4,9 +4,9 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const firebaseConfig: admin.ServiceAccount = {
-  clientEmail: process.env.CLIENTEMAIL,
-  privateKey: process.env.PRIVATKEY,
-  projectId: process.env.PROJECTID,
+  clientEmail: process.env.CLIENTEMAIL || "no client Email",
+  privateKey: process.env.PRIVATKEY || "no Private Key",
+  projectId: process.env.PROJECTID || "no Project Id",
 };
 
 const app = admin.initializeApp({

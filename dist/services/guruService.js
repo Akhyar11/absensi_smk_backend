@@ -15,8 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteGuru = exports.updateGuru = exports.getGuruById = exports.getAllGuru = exports.createGuru = exports.loginGuru = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const privetKey_json_1 = __importDefault(require("../assets/privetKey.json"));
 const firebase_1 = require("../firebase");
+const dotenv_1 = require("dotenv");
+(0, dotenv_1.config)();
 const loginGuru = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
     const guruSnapshot = yield firebase_1.db
         .collection("guru")
@@ -30,7 +31,7 @@ const loginGuru = (email, password) => __awaiter(void 0, void 0, void 0, functio
     if (!isPasswordValid) {
         return "Invalid password";
     }
-    const token = jsonwebtoken_1.default.sign({ uid: guruSnapshot.docs[0].id }, privetKey_json_1.default.value, {
+    const token = jsonwebtoken_1.default.sign({ uid: guruSnapshot.docs[0].id }, process.env.JWT_PRIVATKEY, {
         expiresIn: "1h",
     });
     yield updateTokenGuru(guruSnapshot.docs[0].id, token);

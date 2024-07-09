@@ -16,7 +16,8 @@ exports.deleteAdmin = exports.updateAdmin = exports.getAdminById = exports.getAl
 const firebase_1 = require("../firebase");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const privetKey_json_1 = __importDefault(require("../assets/privetKey.json"));
+const dotenv_1 = require("dotenv");
+(0, dotenv_1.config)();
 const getAdminByToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const adminSnapshot = yield firebase_1.db
@@ -26,7 +27,7 @@ const getAdminByToken = (token) => __awaiter(void 0, void 0, void 0, function* (
         if (adminSnapshot.empty) {
             return "empty admin";
         }
-        const payload = jsonwebtoken_1.default.verify(token, privetKey_json_1.default.value);
+        const payload = jsonwebtoken_1.default.verify(token, process.env.JWT_PRIVATKEY);
         const admin = yield (0, exports.getAdminById)(payload.uid);
         if (!admin)
             return "your not admin";
@@ -52,7 +53,7 @@ const loginAdmin = (email, password) => __awaiter(void 0, void 0, void 0, functi
         if (!isPasswordValid) {
             return "Invalid email or password";
         }
-        const token = jsonwebtoken_1.default.sign({ uid: adminSnapshot.docs[0].id }, privetKey_json_1.default.value, {
+        const token = jsonwebtoken_1.default.sign({ uid: adminSnapshot.docs[0].id }, process.env.JWT_PRIVATKEY, {
             expiresIn: "1h",
         });
         yield updateTokenAdmin(adminSnapshot.docs[0].id, token);
