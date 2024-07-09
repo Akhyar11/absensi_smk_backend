@@ -1,8 +1,11 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import privetKey from "../assets/privetKey.json";
 import { Guru } from "../models/guru";
 import { db } from "../firebase";
+
+import { config } from "dotenv";
+
+config();
 
 export const loginGuru = async (email: string, password: string) => {
   const guruSnapshot = await db
@@ -21,9 +24,13 @@ export const loginGuru = async (email: string, password: string) => {
     return "Invalid password";
   }
 
-  const token = jwt.sign({ uid: guruSnapshot.docs[0].id }, privetKey.value, {
-    expiresIn: "1h",
-  });
+  const token = jwt.sign(
+    { uid: guruSnapshot.docs[0].id },
+    process.env.JWT_PRIVATKEY as string,
+    {
+      expiresIn: "1h",
+    }
+  );
 
   await updateTokenGuru(guruSnapshot.docs[0].id, token);
   return token;

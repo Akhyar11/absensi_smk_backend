@@ -2,7 +2,9 @@ import { db } from "../firebase";
 import { Admin } from "../models/admin";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import priverKey from "../assets/privetKey.json";
+import { config } from "dotenv";
+
+config();
 
 export const getAdminByToken = async (token: string) => {
   try {
@@ -14,7 +16,7 @@ export const getAdminByToken = async (token: string) => {
       return "empty admin";
     }
 
-    const payload = jwt.verify(token, priverKey.value);
+    const payload = jwt.verify(token, process.env.JWT_PRIVATKEY as string);
     const admin = await getAdminById((payload as jwt.JwtPayload).uid);
     if (!admin) return "your not admin";
     return "your is admin";
@@ -42,9 +44,13 @@ export const loginAdmin = async (email: string, password: string) => {
       return "Invalid email or password";
     }
 
-    const token = jwt.sign({ uid: adminSnapshot.docs[0].id }, priverKey.value, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { uid: adminSnapshot.docs[0].id },
+      process.env.JWT_PRIVATKEY as string,
+      {
+        expiresIn: "1h",
+      }
+    );
 
     await updateTokenAdmin(adminSnapshot.docs[0].id, token);
     return { token };

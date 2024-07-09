@@ -1,8 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import { getForCekAdmin } from "../controllers/adminContoller";
 import jwt from "jsonwebtoken";
-import privetKey from "../assets/privetKey.json";
 import { getAdminById } from "../services/adminService";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export const adminAuthMiddleware = async (
   req: Request,
@@ -17,7 +19,7 @@ export const adminAuthMiddleware = async (
       return res.status(401).json({ message: "Unauthorized" });
     }
     try {
-      const payload = jwt.verify(token, privetKey.value);
+      const payload = jwt.verify(token, process.env.JWT_PRIVATKEY as string);
       console.log(payload);
       const admin = await getAdminById((payload as jwt.JwtPayload).uid);
       if (!admin) return res.status(401).json({ message: "your not admin" });
@@ -40,7 +42,7 @@ export const authMiddleware = async (
     return res.status(401).json({ message: "Unauthorized" });
   }
   try {
-    jwt.verify(token, privetKey.value);
+    jwt.verify(token, process.env.JWT_PRIVATKEY as string);
     next();
   } catch (error) {
     console.log(error);
