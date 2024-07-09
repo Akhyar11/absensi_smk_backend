@@ -8,7 +8,7 @@ import mapelRoutes from "./routes/mapelRoute";
 import siswaRoutes from "./routes/siswaRoute";
 
 const app = express();
-const port = 5001;
+const port = 4000;
 
 app.use(express.json());
 app.use(cors());
