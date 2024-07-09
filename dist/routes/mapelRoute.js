@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const mapelController_1 = require("../controllers/mapelController");
+const authMiddleware_1 = require("../middlewares/authMiddleware");
+const router = (0, express_1.Router)();
+router.use(authMiddleware_1.authMiddleware);
+router.post("/create", mapelController_1.createMapelController);
+router.get("/", mapelController_1.getAllMapelController);
+router.get("/:id", mapelController_1.getMapelByIdController);
+router.put("/:id", mapelController_1.updateMapelController);
+router.delete("/:id", mapelController_1.deleteMapelController);
+exports.default = router;

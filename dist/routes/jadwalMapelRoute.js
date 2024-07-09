@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const jadwalMapleController_1 = require("../controllers/jadwalMapleController");
+const authMiddleware_1 = require("../middlewares/authMiddleware");
+const router = (0, express_1.Router)();
+router.use(authMiddleware_1.authMiddleware);
+router.post("/create", jadwalMapleController_1.createJadwalMapelController);
+router.get("/", jadwalMapleController_1.getAllJadwalMapelController);
+router.get("/:id", jadwalMapleController_1.getJadwalMapelByIdController);
+router.get("/guru/:guruId", jadwalMapleController_1.getJadwalMapelByGuruIdController);
+router.get("/kelas/:kelasId", jadwalMapleController_1.getJadwalMapelByKelasIdController);
+router.get("/mapel/:mapelId", jadwalMapleController_1.getJadwalMapelByMapelIdController);
+router.put("/:id", jadwalMapleController_1.updateJadwalMapelController);
+router.delete("/:id", jadwalMapleController_1.deleteJadwalMapelController);
+exports.default = router;
