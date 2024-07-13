@@ -1,4 +1,4 @@
-import { JadwalMapel } from "../models/jadwalMapel";
+import { JadwalMapel, jamType, hariType } from "../models/jadwalMapel";
 import { db } from "../firebase";
 
 // Create JadwalMapel
@@ -6,16 +6,16 @@ export const createJadwalMapel = async (
   id_guru: string,
   id_kelas: string,
   id_mapel: string,
-  jam_mulai: string,
-  jam_berahir: string
+  hari: hariType,
+  jam: jamType
 ): Promise<JadwalMapel> => {
   const JadwalMapelData: JadwalMapel = {
     id_jadwal_mapel: db.collection("jadwalMapel").doc().id,
     id_guru,
     id_kelas,
     id_mapel,
-    jam_mulai,
-    jam_berahir,
+    hari,
+    jam,
   };
 
   await db

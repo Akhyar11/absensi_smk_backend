@@ -7,12 +7,25 @@ import {
   deleteAdmin,
   loginAdmin,
   getAdminByToken,
+  cekPasswordById,
 } from "../services/adminService";
 
 export const cekLoginAdmin = async (req: Request, res: Response) => {
   const { token } = req.body;
   const msg = await getAdminByToken(token);
   res.status(200).json({ message: msg });
+};
+
+export const cekPassword = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { password } = req.body;
+  try {
+    const msg = await cekPasswordById(id, password);
+    res.status(200).json({ message: msg });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 };
 
 export const loginAdminController = async (req: Request, res: Response) => {

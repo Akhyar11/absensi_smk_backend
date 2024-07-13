@@ -11,7 +11,7 @@ export const createMapelController = async (req: Request, res: Response) => {
   try {
     const { nama_mapel } = req.body;
     const mapel = await createMapel(nama_mapel);
-    res.status(201).json(mapel);
+    res.status(201).json({ message: "Mapel created successfully" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -66,7 +66,7 @@ export const deleteMapelController = async (req: Request, res: Response) => {
   try {
     const mapelId = req.params.id;
     await deleteMapelById(mapelId);
-    res.status(204).send();
+    res.status(204).send({ message: "Mapel deleted successfully" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal Server Error" });

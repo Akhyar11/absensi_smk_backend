@@ -6,6 +6,18 @@ import { config } from "dotenv";
 
 config();
 
+export const cekPasswordById = async (id_admin: string, password: string) => {
+  const adminSnapshot = await db.collection("admins").doc(id_admin).get();
+  if (!adminSnapshot.exists) return "Admin not found";
+
+  const adminData = adminSnapshot.data() as Admin;
+  const isPasswordValid = await bcrypt.compare(password, adminData.password);
+
+  if (!isPasswordValid) return "wrong password";
+
+  return "valid password";
+};
+
 export const getAdminByToken = async (token: string) => {
   try {
     const adminSnapshot = await db

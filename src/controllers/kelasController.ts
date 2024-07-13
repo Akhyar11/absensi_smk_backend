@@ -98,7 +98,7 @@ export const deleteKelasController = async (req: Request, res: Response) => {
     if (!kelasData) res.status(404).json({ message: "Cant delete kelas" });
     res
       .status(200)
-      .json({ message: "Delete kelas successfully", data: kelasData });
+      .json({ message: "Kelas delete successfully", data: kelasData });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal Sever Error" });

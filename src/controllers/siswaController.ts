@@ -22,7 +22,7 @@ export const createSiswaController = async (req: Request, res: Response) => {
       tg_masuk,
       tg_lahir
     );
-    res.status(201).json(siswa);
+    res.status(201).json({ message: "Siswa created successfully", siswa });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -136,7 +136,7 @@ export const deleteSiswaController = async (req: Request, res: Response) => {
   try {
     const siswaId = req.params.id;
     await deleteSiswaById(siswaId);
-    res.status(204).send();
+    res.status(200).json({ message: "Siswa deleted successfully" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal Server Error" });

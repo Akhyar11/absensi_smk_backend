@@ -46,6 +46,7 @@ export const updateKelas = async (kelasId: string, data: Kelas) => {
 
 export const deleteKelasById = async (kelasId: string) => {
   const validKelas = await getKelasById(kelasId);
+  console.log(validKelas);
   if (!validKelas) return null;
   const KelasDoc = db.collection("kelas").doc(kelasId);
   await KelasDoc.delete();

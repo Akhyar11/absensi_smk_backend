@@ -6,7 +6,22 @@ import {
   updateGuru,
   deleteGuru,
   loginGuru,
+  cekPasswordById,
+  getGuruByToken,
+  getGuruByToken2,
 } from "../services/guruService";
+
+export const cekLoginGuru = async (req: Request, res: Response) => {
+  const { token } = req.body;
+  const msg = await getGuruByToken(token);
+  res.status(200).json({ message: msg });
+};
+
+export const getGuruByTokenController = async (req: Request, res: Response) => {
+  const { token } = req.params;
+  const msg = await getGuruByToken2(token);
+  res.status(200).json({ message: msg });
+};
 
 export const loginGuruController = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -15,6 +30,18 @@ export const loginGuruController = async (req: Request, res: Response) => {
     res.json({ message: msg });
   } catch (error) {
     res.status(500).json({ message: "Internal server error", error });
+  }
+};
+
+export const cekPassword = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { password } = req.body;
+  try {
+    const msg = await cekPasswordById(id, password);
+    res.status(200).json({ message: msg });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 

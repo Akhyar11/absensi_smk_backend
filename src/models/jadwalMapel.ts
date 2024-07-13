@@ -3,6 +3,9 @@ export interface JadwalMapel {
   id_guru: string;
   id_kelas: string;
   id_mapel: string;
-  jam_mulai: string;
-  jam_berahir: string;
+  hari: hariType;
+  jam: jamType;
 }
+
+export type hariType = "senin" | "selasa" | "rabu" | "kemis" | "jumat";
+export type jamType = 1 | 2 | 3 | 4;

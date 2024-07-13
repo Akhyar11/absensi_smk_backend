@@ -6,6 +6,7 @@ import kelasRoutes from "./routes/kelasRoute";
 import jadwalMapelRoutes from "./routes/jadwalMapelRoute";
 import mapelRoutes from "./routes/mapelRoute";
 import siswaRoutes from "./routes/siswaRoute";
+import absensiRoutes from "./routes/absensiRoute";
 
 const app = express();
 const port = 4000;
@@ -19,6 +20,7 @@ app.use("/kelas", kelasRoutes);
 app.use("/jadwalMapel", jadwalMapelRoutes);
 app.use("/mapel", mapelRoutes);
 app.use("/siswa", siswaRoutes);
+app.use("/absensi", absensiRoutes);
 app.get("/", (req, res) => {
   res.status(200).send("hello world");
 });

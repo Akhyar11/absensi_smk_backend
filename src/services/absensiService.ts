@@ -1,9 +1,37 @@
 import { db } from "../firebase";
 import { Absensi } from "../models/absensi";
+import { getJadwalMapelById } from "./jadwalMapelService";
+import { getSiswaByToken } from "./siswaService";
+
+interface DataValidasiAbsensi {
+  id_jadwal: string;
+  id_kelas: string;
+  token: string;
+}
+
+export const validasiAbsensi = async (data: DataValidasiAbsensi[]) => {
+  for (let validasi of data) {
+    const dataSiswa = await getSiswaByToken(validasi.token);
+    const dataJadwal = await getJadwalMapelById(validasi.id_jadwal);
+    if (dataSiswa && dataJadwal) {
+      await createAbsensi(
+        dataSiswa.id_siswa,
+        validasi.id_jadwal,
+        dataJadwal.id_mapel,
+        true,
+        "Absensi RFID",
+        new Date()
+      );
+    } else return "Data Tidak Sesuai";
+  }
+
+  return "Absensi Selesai";
+};
 
 export const createAbsensi = async (
   id_siswa: string,
   id_jadwal: string,
+  id_mapel: string,
   kehadiran: boolean,
   keterangan: string,
   waktu_absen: Date
@@ -12,6 +40,7 @@ export const createAbsensi = async (
     id_absensi: db.collection("absensi").doc().id,
     id_siswa,
     id_jadwal,
+    id_mapel,
     kehadiran,
     keterangan,
     waktu_absen,
@@ -60,4 +89,14 @@ export const updateAbsensi = async (id_absensi: string, data: Absensi) => {
 
   await absensiDoc.update(absensiData);
   return data;
+};
+
+export const deleteAbsensiById = async (id_absensi: string) => {
+  try {
+    await db.collection("absensi").doc(id_absensi).delete();
+    return true; // Berhasil menghapus
+  } catch (error) {
+    console.log("Error deleting absensi:", error);
+    return false; // Gagal menghapus
+  }
 };

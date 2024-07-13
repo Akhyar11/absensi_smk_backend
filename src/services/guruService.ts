@@ -7,6 +7,58 @@ import { config } from "dotenv";
 
 config();
 
+export const getGuruByToken = async (token: string) => {
+  try {
+    const guruSnapshot = await db
+      .collection("guru")
+      .where("token", "==", token)
+      .get();
+    if (guruSnapshot.empty) {
+      return "empty guru";
+    }
+
+    const payload = jwt.verify(token, process.env.JWT_PRIVATKEY as string);
+    const guru = await getGuruById((payload as jwt.JwtPayload).uid);
+    if (!guru) return "your not guru";
+    return "your is guru";
+  } catch (error) {
+    console.log(error);
+    return "Internal server error";
+  }
+};
+
+export const getGuruByToken2 = async (token: string) => {
+  try {
+    const guruSnapshot = await db
+      .collection("guru")
+      .where("token", "==", token)
+      .get();
+    if (guruSnapshot.empty) {
+      return "empty guru";
+    }
+
+    const payload = jwt.verify(token, process.env.JWT_PRIVATKEY as string);
+    const guru = await getGuruById((payload as jwt.JwtPayload).uid);
+    if (!guru) return "your not guru";
+    return guru;
+  } catch (error) {
+    console.log(error);
+    return "Internal server error";
+  }
+};
+
+export const cekPasswordById = async (id_guru: string, password: string) => {
+  const guruSnapshot = await db.collection("guru").doc(id_guru).get();
+  if (!guruSnapshot.exists) return "Guru not found";
+
+  const guruData = guruSnapshot.data() as Guru;
+  const isPasswordValid = await bcrypt.compare(password, guruData.password);
+
+  if (!isPasswordValid) return "wrong password";
+
+  return "valid password";
+};
+
 export const loginGuru = async (email: string, password: string) => {
   const guruSnapshot = await db
     .collection("guru")

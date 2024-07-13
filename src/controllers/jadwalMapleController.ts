@@ -15,13 +15,13 @@ export const createJadwalMapelController = async (
   res: Response
 ) => {
   try {
-    const { id_guru, id_kelas, id_mapel, jam_mulai, jam_berahir } = req.body;
+    const { id_guru, id_kelas, id_mapel, hari, jam } = req.body;
     const jadwalMapel = await createJadwalMapel(
       id_guru,
       id_kelas,
       id_mapel,
-      jam_mulai,
-      jam_berahir
+      hari,
+      jam
     );
     res.status(201).json(jadwalMapel);
   } catch (error) {
@@ -121,14 +121,14 @@ export const updateJadwalMapelController = async (
 ) => {
   try {
     const jadwalMapelId = req.params.id;
-    const { id_guru, id_kelas, id_mapel, jam_mulai, jam_berahir } = req.body;
+    const { id_guru, id_kelas, id_mapel, hari, jam } = req.body;
     const updatedJadwalMapel = await updateJadwalMapel(jadwalMapelId, {
       id_jadwal_mapel: jadwalMapelId,
       id_guru,
       id_kelas,
       id_mapel,
-      jam_mulai,
-      jam_berahir,
+      hari,
+      jam,
     });
     if (!updatedJadwalMapel) {
       res.status(404).json({ error: "JadwalMapel not found" });
