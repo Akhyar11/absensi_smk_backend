@@ -16,14 +16,8 @@ export const createJadwalMapelController = async (
 ) => {
   try {
     const { id_guru, id_kelas, id_mapel, hari, jam } = req.body;
-    const jadwalMapel = await createJadwalMapel(
-      id_guru,
-      id_kelas,
-      id_mapel,
-      hari,
-      jam
-    );
-    res.status(201).json(jadwalMapel);
+    await createJadwalMapel(id_guru, id_kelas, id_mapel, hari, jam);
+    res.status(200).json({ message: "Jadwal created" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal Server Error" });

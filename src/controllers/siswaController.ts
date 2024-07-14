@@ -124,7 +124,7 @@ export const updateSiswaController = async (req: Request, res: Response) => {
     if (!updatedSiswa) {
       res.status(404).json({ error: "Siswa not found" });
     } else {
-      res.status(200).json(updatedSiswa);
+      res.status(200).json({ message: "Siswa updated" });
     }
   } catch (error) {
     console.log(error);

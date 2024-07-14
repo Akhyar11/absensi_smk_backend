@@ -10,22 +10,27 @@ interface DataValidasiAbsensi {
 }
 
 export const validasiAbsensi = async (data: DataValidasiAbsensi[]) => {
-  for (let validasi of data) {
-    const dataSiswa = await getSiswaByToken(validasi.token);
-    const dataJadwal = await getJadwalMapelById(validasi.id_jadwal);
-    if (dataSiswa && dataJadwal) {
-      await createAbsensi(
-        dataSiswa.id_siswa,
-        validasi.id_jadwal,
-        dataJadwal.id_mapel,
-        true,
-        "Absensi RFID",
-        new Date()
-      );
-    } else return "Data Tidak Sesuai";
-  }
+  try {
+    for (let validasi of data) {
+      const dataSiswa = await getSiswaByToken(validasi.token);
+      const dataJadwal = await getJadwalMapelById(validasi.id_jadwal);
+      if (dataSiswa && dataJadwal) {
+        await createAbsensi(
+          dataSiswa.id_siswa,
+          validasi.id_jadwal,
+          dataJadwal.id_mapel,
+          true,
+          "Absensi RFID",
+          new Date()
+        );
+      } else return "Data Tidak Sesuai";
+    }
 
-  return "Absensi Selesai";
+    return "Absensi Selesai";
+  } catch (error) {
+    console.log(error);
+    return "Internal Server Error";
+  }
 };
 
 export const createAbsensi = async (

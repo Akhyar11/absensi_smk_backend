@@ -15,7 +15,7 @@ export const validasiAbsensiController = async (
   req: Request,
   res: Response
 ) => {
-  const data = req.body;
+  const { data } = req.body;
   try {
     const valid = await validasiAbsensi(data);
     res.status(200).json({ message: valid });

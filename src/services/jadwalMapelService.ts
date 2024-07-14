@@ -1,5 +1,8 @@
 import { JadwalMapel, jamType, hariType } from "../models/jadwalMapel";
 import { db } from "../firebase";
+import { getAllMapel, getMapelById } from "./mapelService";
+import { getAllGuru, getGuruById } from "./guruService";
+import { getAllKelas, getKelasById } from "./kelasService";
 
 // Create JadwalMapel
 export const createJadwalMapel = async (
@@ -28,7 +31,37 @@ export const createJadwalMapel = async (
 // Read all JadwalMapel
 export const getAllJadwalMapel = async (): Promise<JadwalMapel[]> => {
   const snapshot = await db.collection("jadwalMapel").get();
-  return snapshot.docs.map((doc) => doc.data() as JadwalMapel);
+  const jadwalData = snapshot.docs.map((doc) => doc.data() as JadwalMapel);
+  const mapelData = await getAllMapel();
+  const guruData = await getAllGuru();
+  const kelasData = await getAllKelas();
+
+  const dataMapel = jadwalData.map((jadwal) => {
+    const newJadwal: JadwalMapel = mapelData.map((mapel) => {
+      if (mapel.id_mapel == jadwal.id_mapel)
+        jadwal.id_mapel == mapel.nama_mapel;
+      return jadwal;
+    })[0];
+    return newJadwal;
+  });
+
+  const dataGuru = dataMapel.map((jadwal) => {
+    const newJadwal: JadwalMapel = guruData.map((guru) => {
+      if (guru.id_guru == jadwal.id_guru) jadwal.id_guru == guru.nama;
+      return jadwal;
+    })[0];
+    return newJadwal;
+  });
+
+  const dataKelas = dataGuru.map((jadwal) => {
+    const newJadwal: JadwalMapel = kelasData.map((kls) => {
+      if (kls.id_kelas == jadwal.id_kelas) jadwal.id_kelas == kls.nama_kelas;
+      return jadwal;
+    })[0];
+    return newJadwal;
+  });
+
+  return dataKelas;
 };
 
 // Read by id JadwalMapel
