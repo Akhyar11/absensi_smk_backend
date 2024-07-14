@@ -1,6 +1,6 @@
 import { db } from "../firebase";
 import { Absensi } from "../models/absensi";
-import { getJadwalMapelById } from "./jadwalMapelService";
+import { getJadwalMapelByKelasId } from "./jadwalMapelService";
 import { getSiswaByToken } from "./siswaService";
 
 interface DataValidasiAbsensi {
@@ -13,17 +13,42 @@ export const validasiAbsensi = async (data: DataValidasiAbsensi[]) => {
   try {
     for (let validasi of data) {
       const dataSiswa = await getSiswaByToken(validasi.token);
-      const dataJadwal = await getJadwalMapelById(validasi.id_jadwal);
+      const dataJadwal = await getJadwalMapelByKelasId(validasi.id_kelas);
+      const daysOfWeek = [
+        "minggu",
+        "senin",
+        "selasa",
+        "sabu",
+        "kamis",
+        "jumat",
+        "sabtu",
+      ];
+      const hoursOfJadwal = [7, 9, 13, 14];
+
+      const dayNow = daysOfWeek[new Date().getDay()];
+      const hourNow = new Date().getHours(); // Mendapatkan jam (0-23)
+
       if (dataSiswa && dataJadwal) {
-        await createAbsensi(
-          dataSiswa.id_siswa,
-          validasi.id_jadwal,
-          dataJadwal.id_mapel,
-          true,
-          "Absensi RFID",
-          new Date()
-        );
-      } else return "Data Tidak Sesuai";
+        for (let jadwal of dataJadwal) {
+          if (
+            jadwal.hari == dayNow &&
+            hoursOfJadwal[jadwal.jam - 1] == hourNow
+          ) {
+            await createAbsensi(
+              dataSiswa.id_siswa,
+              jadwal.id_jadwal_mapel,
+              jadwal.id_kelas,
+              true,
+              "Absensi RFID",
+              new Date()
+            );
+          } else {
+            return "Belum waktu absensi";
+          }
+        }
+      } else {
+        return "Data tidak sesuai";
+      }
     }
 
     return "Absensi Selesai";

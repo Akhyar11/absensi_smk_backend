@@ -89,14 +89,14 @@ export const getJadwalMapelByGuruId = async (
 // Read by id_kelas JadwalMapel
 export const getJadwalMapelByKelasId = async (
   kelasId: string
-): Promise<JadwalMapel | null> => {
+): Promise<JadwalMapel[] | null> => {
   const doc = await db
     .collection("jadwalMapel")
     .where("id_kelas", "==", kelasId)
     .get();
   if (doc.empty) return null;
   const JadwalMapelData = doc.docs;
-  return JadwalMapelData[0].data() as JadwalMapel;
+  return JadwalMapelData.map((jadwal) => jadwal.data() as JadwalMapel);
 };
 
 // Read by id_mapel JadwalMapel
