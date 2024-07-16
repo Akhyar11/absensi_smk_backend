@@ -13,7 +13,7 @@ import { authMiddleware } from "../middlewares/authMiddleware";
 
 const router = Router();
 
-router.post("/validasiAbsensi", validasiAbsensiController);
+router.get("/validasiAbsensi/:token/:id_kelas", validasiAbsensiController);
 
 // Endpoint untuk membuat absensi baru
 router.post("/create", authMiddleware, createAbsensiController);

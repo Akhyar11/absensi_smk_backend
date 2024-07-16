@@ -8,6 +8,7 @@ import {
   updateAbsensi,
   deleteAbsensiById,
   validasiAbsensi,
+  DataValidasiAbsensi,
 } from "../services/absensiService";
 import { Absensi } from "../models/absensi";
 
@@ -15,8 +16,9 @@ export const validasiAbsensiController = async (
   req: Request,
   res: Response
 ) => {
-  const { data } = req.body;
+  const { id_kelas, token } = req.params;
   try {
+    const data: DataValidasiAbsensi[] = [{ id_kelas, token, id_jadwal: "" }];
     const valid = await validasiAbsensi(data);
     res.status(200).json({ message: valid });
   } catch (error) {

@@ -3,7 +3,7 @@ import { Absensi } from "../models/absensi";
 import { getJadwalMapelByKelasId } from "./jadwalMapelService";
 import { getSiswaByToken } from "./siswaService";
 
-interface DataValidasiAbsensi {
+export interface DataValidasiAbsensi {
   id_jadwal: string;
   id_kelas: string;
   token: string;
