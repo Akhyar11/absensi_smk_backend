@@ -38,8 +38,7 @@ export const getAllJadwalMapel = async (): Promise<JadwalMapel[]> => {
 
   const dataMapel = jadwalData.map((jadwal) => {
     const newJadwal: JadwalMapel = mapelData.map((mapel) => {
-      if (mapel.id_mapel == jadwal.id_mapel)
-        jadwal.id_mapel == mapel.nama_mapel;
+      if (mapel.id_mapel == jadwal.id_mapel) jadwal.id_mapel = mapel.nama_mapel;
       return jadwal;
     })[0];
     return newJadwal;
@@ -47,7 +46,7 @@ export const getAllJadwalMapel = async (): Promise<JadwalMapel[]> => {
 
   const dataGuru = dataMapel.map((jadwal) => {
     const newJadwal: JadwalMapel = guruData.map((guru) => {
-      if (guru.id_guru == jadwal.id_guru) jadwal.id_guru == guru.nama;
+      if (guru.id_guru == jadwal.id_guru) jadwal.id_guru = guru.nama;
       return jadwal;
     })[0];
     return newJadwal;
@@ -55,7 +54,7 @@ export const getAllJadwalMapel = async (): Promise<JadwalMapel[]> => {
 
   const dataKelas = dataGuru.map((jadwal) => {
     const newJadwal: JadwalMapel = kelasData.map((kls) => {
-      if (kls.id_kelas == jadwal.id_kelas) jadwal.id_kelas == kls.nama_kelas;
+      if (kls.id_kelas == jadwal.id_kelas) jadwal.id_kelas = kls.nama_kelas;
       return jadwal;
     })[0];
     return newJadwal;

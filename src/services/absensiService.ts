@@ -96,7 +96,8 @@ export const getAbsensiBySiswa = async (id_siswa: string) => {
     .collection("absensi")
     .where("id_siswa", "==", id_siswa)
     .get();
-  if (!snapshot.empty) return null;
+
+  if (snapshot.empty) return null;
   return snapshot.docs.map((doc) => doc.data() as Absensi);
 };
 
@@ -105,7 +106,7 @@ export const getAbsensiByJadwal = async (id_jadwal: string) => {
     .collection("absensi")
     .where("id_jadwal", "==", id_jadwal)
     .get();
-  if (!snapshot.empty) return null;
+  if (snapshot.empty) return null;
   return snapshot.docs.map((doc) => doc.data() as Absensi);
 };
 

@@ -142,7 +142,7 @@ export const deleteJadwalMapelController = async (
   try {
     const jadwalMapelId = req.params.id;
     await deleteJadwalMapelById(jadwalMapelId);
-    res.status(204).send();
+    res.status(204).send({ message: "Jadwal deleted" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal Server Error" });
