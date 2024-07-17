@@ -23,7 +23,7 @@ export const validasiAbsensi = async (data: DataValidasiAbsensi[]) => {
         "jumat",
         "sabtu",
       ];
-      const hoursOfJadwal = [7, 9, 13, 14];
+      const hoursOfJadwal = [7, 9, 11, 14];
 
       const dayNow = daysOfWeek[new Date().getDay()];
       const hourNow = new Date().getHours(); // Mendapatkan jam (0-23)
