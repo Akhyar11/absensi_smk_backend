@@ -23,16 +23,28 @@ export const validasiAbsensi = async (data: DataValidasiAbsensi[]) => {
         "jumat",
         "sabtu",
       ];
-      const hoursOfJadwal = [7, 9, 11, 14];
+      const hoursOfJadwal = [7, 9, 12, 14];
 
       const dayNow = daysOfWeek[new Date().getDay()];
       const hourNow = new Date().getHours(); // Mendapatkan jam (0-23)
 
+      let cond_absen = false;
+
       if (dataSiswa && dataJadwal) {
         for (let jadwal of dataJadwal) {
+          console.log(
+            jadwal.hari == dayNow,
+            hoursOfJadwal[jadwal.jam - 1] == hourNow
+          );
+          console.log({
+            dayNow,
+            hourNow,
+            hourFromJadwal: jadwal.jam,
+          });
           if (
             jadwal.hari == dayNow &&
-            hoursOfJadwal[jadwal.jam - 1] == hourNow
+            hoursOfJadwal[jadwal.jam - 1] == hourNow &&
+            !cond_absen
           ) {
             await createAbsensi(
               dataSiswa.id_siswa,
@@ -42,10 +54,13 @@ export const validasiAbsensi = async (data: DataValidasiAbsensi[]) => {
               "Absensi RFID",
               new Date()
             );
-          } else {
-            return "Belum waktu absensi";
+
+            cond_absen = true;
+            return "Presensi berhasil";
           }
         }
+
+        if (!cond_absen) return "Belum waktu absen";
       } else {
         return "Data tidak sesuai";
       }
